@@ -3,9 +3,11 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import UserRegistrationSerializer, ProfileSerializer
 from rest_framework.permissions import IsAuthenticated
+from accounts.permissions import IsAnonymous
 
 
 class UserRegistrationView(APIView):
+    permission_classes = [IsAnonymous]
     def post(self, request):
         serializer = UserRegistrationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
