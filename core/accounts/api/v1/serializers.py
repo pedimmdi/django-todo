@@ -20,5 +20,3 @@ class ProfileSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'user': {'read_only': True}
         }
-
-
