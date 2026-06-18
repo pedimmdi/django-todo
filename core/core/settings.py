@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'accounts',
     'todo',
+    'drf_spectacular',
     
 ]
 
@@ -48,6 +49,77 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Todo API",
+
+    "DESCRIPTION": """
+A RESTful API for managing todo lists and tasks.
+
+Built with:
+- Django
+- Django REST Framework
+- Simple JWT
+- drf-spectacular
+
+Modules:
+- Accounts
+- Profiles
+- Todo Lists
+- Tasks
+
+Features:
+- JWT Authentication
+- User Profile Management
+- Todo Lists CRUD
+- Tasks CRUD
+- Status and Priority Management
+- OpenAPI 3 Documentation
+""",
+
+    "VERSION": "1.0.0",
+
+    "SERVE_INCLUDE_SCHEMA": False,
+    "COMPONENT_SPLIT_REQUEST": True,
+    
+    "CONTACT": {
+    "name": "pedimmdi",
+    "email": "pedimmdi@gmail.com",
+},
+
+    "LICENSE": {
+        "name": "MIT License",
+    },
+
+    "SERVERS": [
+        {
+            "url": "http://127.0.0.1:8000",
+            "description": "Development",
+        },
+        # {
+        #     "url": "https://api.example.com",
+        #     "description": "Production",
+        # }
+    ],
+
+    "SECURITY": [
+        {
+            "jwtAuth": []
+        }
+    ],
+
+    "COMPONENTS": {
+        "securitySchemes": {
+            "jwtAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+            }
+        }
+    },
 }
 
 

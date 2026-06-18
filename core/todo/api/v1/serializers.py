@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from todo.models import Status, Priority, TodoList, Task
+from django.contrib.auth.models import AnonymousUser
 
 
 class StatusSerializer(serializers.ModelSerializer):
@@ -31,8 +32,10 @@ class TaskWriteSerializer(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         request = self.context.get("request")
-        if request:
-            self.fields["todo_list"].queryset = (TodoList.objects.filter(user=request.user))
+        if request and request.user.is_authenticated:
+            self.fields["todo_list"].queryset = TodoList.objects.filter(user=request.user)
+        else:
+            self.fields["todo_list"].queryset = TodoList.objects.none()
 
 
 class TaskReadSerializer(serializers.ModelSerializer):
