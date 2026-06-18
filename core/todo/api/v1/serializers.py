@@ -28,6 +28,12 @@ class TaskWriteSerializer(serializers.ModelSerializer):
         model = Task
         fields = ["id", "title", "description", "todo_list", "status", "priority", "deadline", "created_at", "updated_at"]
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get("request")
+        if request:
+            self.fields["todo_list"].queryset = (TodoList.objects.filter(user=request.user))
+
 
 class TaskReadSerializer(serializers.ModelSerializer):
     status = StatusSerializer(read_only=True)
