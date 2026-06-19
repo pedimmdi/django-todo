@@ -1,0 +1,38 @@
+services:
+
+  db:
+    image: postgres:17
+    container_name: todo_db
+
+    env_file:
+      - ./core/.env
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+    ports:
+      - "5432:5432"
+
+  web:
+    build: .
+    command: >
+      sh -c "python manage.py migrate &&
+            python manage.py runserver 0.0.0.0:8000"
+
+    container_name: todo_api
+
+    volumes:
+      - ./core:/app/core
+
+    ports:
+      - "8000:8000"
+
+    env_file:
+      - ./core/.env
+
+    depends_on:
+      - db
+
+
+volumes:
+  postgres_data:
